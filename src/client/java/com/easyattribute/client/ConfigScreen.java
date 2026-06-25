@@ -1,9 +1,10 @@
 package com.easyattribute.client;
 
 import com.easyattribute.SwapConfig;
-import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 
 public class ConfigScreen extends Screen {
@@ -30,24 +31,23 @@ public class ConfigScreen extends Screen {
                     SwapConfig.save();
                 }
             } catch (NumberFormatException ignored) {}
-            minecraft.setScreen(parent);
+            minecraft.gui.setScreen(parent);
         }).bounds(width / 2 - 50, height / 2 + 20, 100, 20).build());
 
         addRenderableWidget(Button.builder(Component.literal("Cancel"), btn ->
-                minecraft.setScreen(parent)
+                minecraft.gui.setScreen(parent)
         ).bounds(width / 2 - 50, height / 2 + 45, 100, 20).build());
     }
 
     @Override
-    public void render(net.minecraft.client.gui.GuiGraphics graphics, int mouseX, int mouseY, float delta) {
-        renderBackground(graphics, mouseX, mouseY, delta);
+    protected void extractBackground(GuiGraphicsExtractor graphics, int mouseX, int mouseY, float delta) {
+        super.extractBackground(graphics, mouseX, mouseY, delta);
         graphics.drawCenteredString(font, "Easy Attribute Config", width / 2, height / 2 - 40, 0xFFFFFF);
         graphics.drawCenteredString(font, "Weapon Slot (0-8):", width / 2, height / 2 - 25, 0xAAAAAA);
-        super.render(graphics, mouseX, mouseY, delta);
     }
 
     @Override
     public void onClose() {
-        minecraft.setScreen(parent);
+        minecraft.gui.setScreen(parent);
     }
 }
