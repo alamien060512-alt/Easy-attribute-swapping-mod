@@ -1,0 +1,32 @@
+{
+	"schemaVersion": 1,
+	"id": "easy-attribute",
+	"version": "${version}",
+	"name": "Easy Attribute",
+	"description": "Press a key to attack with a weapon slot and snap back to your original slot.",
+	"authors": ["ImHungry1480"],
+	"contact": {
+		"homepage": "https://imhungry1480-hub.creepers.sbs",
+		"sources": "https://github.com/alamien060512-alt"
+	},
+	"license": "MIT",
+	"icon": "assets/easy-attribute/icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"main": ["com.easyattribute.EasyAttribute"],
+		"client": ["com.easyattribute.client.EasyAttributeClient"]
+	},
+	"mixins": [
+		"easy-attribute.mixins.json",
+		{
+			"config": "easy-attribute.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.19.3",
+		"minecraft": "~26.2",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}
