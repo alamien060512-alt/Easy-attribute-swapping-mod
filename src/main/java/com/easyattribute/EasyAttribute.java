@@ -12,7 +12,7 @@ public class EasyAttribute implements ModInitializer {
     @Override
     public void onInitialize() {
         SwapConfig.load();
-        LOGGER.info("Easy Attribute loaded — slots: {}", SwapConfig.get().swapSlots);
+        LOGGER.info("Easy Attribute loaded — weapon slot: {}", SwapConfig.get().weaponSlot);
     }
 
     public static Identifier id(String path) {
