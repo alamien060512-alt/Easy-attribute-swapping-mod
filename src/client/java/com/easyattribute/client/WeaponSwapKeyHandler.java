@@ -13,6 +13,7 @@ import org.lwjgl.glfw.GLFW;
 
 public class WeaponSwapKeyHandler {
     public static KeyMapping swapKey;
+    public static KeyMapping configKey;
 
     private static int restoreSlot = -1;
 
@@ -21,6 +22,13 @@ public class WeaponSwapKeyHandler {
             "key.weaponswap.swap",
             InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_F,
+            KeyMapping.Category.MISC
+        ));
+
+        configKey = KeyMappingHelper.registerKeyMapping(new KeyMapping(
+            "key.weaponswap.config",
+            InputConstants.Type.KEYSYM,
+            GLFW.GLFW_KEY_UNKNOWN,
             KeyMapping.Category.MISC
         ));
 
