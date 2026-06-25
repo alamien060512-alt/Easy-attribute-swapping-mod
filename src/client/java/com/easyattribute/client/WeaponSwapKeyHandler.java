@@ -1,8 +1,9 @@
 package com.easyattribute.client;
 
 import com.easyattribute.SwapConfig;
+import com.easyattribute.client.mixin.InventoryAccessor;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -13,21 +14,19 @@ import org.lwjgl.glfw.GLFW;
 public class WeaponSwapKeyHandler {
     public static KeyMapping swapKey;
 
-    // pending restore: -1 means nothing to restore
     private static int restoreSlot = -1;
 
     public static void register() {
-        swapKey = KeyBindingHelper.registerKeyBinding(new KeyMapping(
+        swapKey = KeyMappingHelper.registerKeyMapping(new KeyMapping(
             "key.weaponswap.swap",
             InputConstants.Type.KEYSYM,
             GLFW.GLFW_KEY_F,
-            "category.weaponswap"
+            KeyMapping.Category.MISC
         ));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            // restore slot from previous tick first
             if (restoreSlot != -1 && client.player != null) {
-                client.player.getInventory().selected = restoreSlot;
+                ((InventoryAccessor) client.player.getInventory()).setSelected(restoreSlot);
                 restoreSlot = -1;
             }
 
@@ -41,19 +40,16 @@ public class WeaponSwapKeyHandler {
         LocalPlayer player = client.player;
         if (player == null || client.level == null) return;
 
-        int original = player.getInventory().selected;
+        int original = ((InventoryAccessor) player.getInventory()).getSelected();
         int target = SwapConfig.get().targetSlot();
 
-        // swap to weapon slot
         if (target != original) {
-            player.getInventory().selected = target;
+            ((InventoryAccessor) player.getInventory()).setSelected(target);
         }
 
-        // attack with weapon slot active
         client.gameMode.attack(player, player);
         player.swing(InteractionHand.MAIN_HAND);
 
-        // queue restore back to original next tick
         if (target != original) {
             restoreSlot = original;
         }
